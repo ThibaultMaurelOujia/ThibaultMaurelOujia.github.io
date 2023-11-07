@@ -14,47 +14,33 @@ body {
 }
 
 header {
-    background: #333;
-    color: #fff;
+    background: #0a0a0a; /* Couleur de fond plus foncée */
+    color: #ffffff;
     padding: 20px 0;
     text-align: center;
 }
 
 header h1 {
     margin-bottom: 5px;
+    font-size: 36px; /* Taille de police plus grande pour le titre */
 }
 
 header p {
     font-style: italic;
+    color: #dddddd; /* Couleur de texte plus claire */
 }
 
 section {
     margin: 20px 0;
-}
-
-section#about-me {
-    background: #fff;
     padding: 20px;
-}
-
-section#research-interests {
-    background: #e2e2e2;
-    padding: 20px;
-}
-
-section#news {
-    background: #dcdcdc;
-    padding: 20px;
-}
-
-section#contact {
-    background: #ccc;
-    padding: 20px;
-    text-align: center;
+    background: #ffffff; /* Fond blanc pour chaque section */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre portée légère */
 }
 
 section h2 {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    color: #0a0a0a;
+    font-size: 28px; /* Taille de police plus grande pour les sous-titres */
 }
 
 ul {
@@ -63,10 +49,11 @@ ul {
 }
 
 ul li {
-    background: #fff;
-    margin-bottom: 5px;
+    background: #ffffff;
+    margin-bottom: 10px;
     padding: 10px;
-    border-left: 4px solid #333;
+    border-left: 4px solid #333333; /* Barre verticale à gauche des items */
+    font-size: 16px; 
 }
 
 a {
