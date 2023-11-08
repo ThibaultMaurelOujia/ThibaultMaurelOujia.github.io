@@ -11,57 +11,81 @@ body {
     color: #333;
     background-color: #f4f4f4;
     display: flex; /* Utiliser flexbox pour disposer les éléments */
-    flex-direction: row; /* Aligner les éléments horizontalement */
+    flex-direction: column; /* Aligner les éléments verticalement */
     min-height: 100vh; /* Assurer que le body prend toute la hauteur de la fenêtre */
+    align-items: center; /* Centrer le contenu horizontalement */
 }
 
 header {
-    width: 20%; /* Ou la largeur que vous préférez pour l'en-tête */
-    background: #0a0a0a;
-    color: #ffffff;
+    width: 100%; /* L'en-tête prend toute la largeur de la page */
+    background: #0a0a0a; /* Couleur de fond de l'en-tête */
+    color: #ffffff; /* Couleur de texte de l'en-tête */
     padding: 20px;
-    height: 100vh; /* Hauteur complète de la fenêtre */
-    display: flex;
-    flex-direction: column; /* Aligner les éléments verticalement dans l'en-tête */
-    justify-content: center; /* Centrer le contenu verticalement */
-    align-items: center; /* Centrer le contenu horizontalement */
-    position: fixed; /* Fixer l'en-tête pour qu'il ne défile pas avec le contenu */
-    left: 0; /* Aligner l'en-tête à gauche */
-    top: 0; /* Aligner l'en-tête en haut */
+    text-align: center; /* Centrer le texte dans l'en-tête */
 }
 
 .content {
-    margin-left: 20%; /* Espace pour l'en-tête fixe */
-    width: 80%; /* Espace restant pour le contenu */
+    width: 100%; /* Le contenu prend toute la largeur de la page */
     overflow-y: auto; /* Permettre le défilement vertical si nécessaire */
     padding: 20px;
 }
 
-/* Styles pour les autres éléments... */
 
 footer {
-    position: fixed; /* Fixer le footer */
-    bottom: 0; /* Aligner le footer en bas */
-    left: 0; /* Aligner le footer à gauche */
-    width: 100%; /* Largeur complète */
-    background: #0a0a0a;
-    color: white;
-    text-align: center;
+    width: 100%; /* Le pied de page prend toute la largeur de la page */
+    background: #0a0a0a; /* Couleur de fond du pied de page */
+    color: white; /* Couleur de texte du pied de page */
+    text-align: center; /* Centrer le texte dans le pied de page */
     padding: 10px;
 }
 
+
+
+header h1 {
+    margin-bottom: 5px;
+    font-size: 36px; /* Taille de police plus grande pour le titre */
+}
+
+header p {
+    font-style: italic;
+    color: #dddddd; /* Couleur de texte plus claire */
+}
+
+section {
+    margin: 20px 0;
+    padding: 20px;
+    background: #ffffff; /* Fond blanc pour chaque section */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre portée légère */
+}
+
+section h2 {
+    margin-bottom: 20px;
+    color: #0a0a0a;
+    font-size: 28px; /* Taille de police plus grande pour les sous-titres */
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    background: #ffffff;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-left: 4px solid #333333; /* Barre verticale à gauche des items */
+    font-size: 16px; 
+}
+
+a {
+    color: #333;
+    text-decoration: none;
+}
+
+
+
+
 /* Médias queries pour ajuster la mise en page sur des écrans plus petits */
 @media (max-width: 768px) {
-    header {
-        width: 100%;
-        height: auto;
-        position: static;
-    }
-    .content {
-        margin-left: 0;
-        width: 100%;
-    }
-    footer {
-        position: static;
-    }
+    /* Les styles s'adapteront ici pour les petits écrans */
 }
