@@ -5,575 +5,63 @@
     box-sizing: border-box;
 }
 
-
-
-
-@import url("https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,600&display=swap");@import url("https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap");body {
-    background-color: #fff;
-    padding: 0px;
-    font: 16.0px/1.5 Crimson Pro, serif;
-    color: #595959;
-    font-weight: 400;
-    margin: 0
-}
-
-.social-icons a {
-    display: inline-block;
-    height: 3rem;
-    width: 3rem;
-    background-color: #495057;
-    color: #fff !important;
-    border-radius: 100%;
-    text-align: center;
-    font-size: 1.5rem;
-    line-height: 3.1rem;
-    margin-right: 1rem
-}
-
-.social-icons a:last-child {
-    margin-right: 0
-}
-
-.social-icons a:hover {
-    background-color: #000000
-}
-
-autocolor {
-    color: #494949
-}
-
-lightonly {
-    visibility: visible
-}
-
-darkonly {
-    visibility: hidden
-}
-
-education {
-    font-weight: 500;
-    font-size: 115%
-}
-
-papertitle {
-    font-weight: 600;
-    font-size: 100%
-}
-
-@media (prefers-color-scheme: dark) {
-    body {
-        background-color:#282C34;
-        color: #dadbdf
-    }
-
-    autocolor {
-        color: #dadbdf
-    }
-
-    lightonly {
-        visibility: hidden
-    }
-
-    darkonly {
-        visibility: visible
-    }
-
-    papertitle {
-        color: #eeeff0
-    }
-}
-
-.image {
-    border-radius: 0.35em;
-    border: 0;
-    display: inline-block;
-    position: relative
-}
-
-.image:before {
-    -moz-transition: opacity 0.2s ease-in-out;
-    -webkit-transition: opacity 0.2s ease-in-out;
-    -ms-transition: opacity 0.2s ease-in-out;
-    transition: opacity 0.2s ease-in-out;
-    border-radius: 0.35em;
-    content: '';
-    display: block;
-    height: 100%;
-    left: 0;
-    opacity: 0.5;
-    position: absolute;
-    top: 0;
-    width: 100%
-}
-
-.image.avatar {
-    border-radius: 100%
-}
-
-.image.avatar:before {
-    display: none
-}
-
-.image.avatar img {
-    border-radius: 100%;
-    width: 50%;
-    padding: 20px
-}
-
-#header .image.avatar {
-    margin: 0 0 1em 0;
-    width: 8.00em
-}
-
-h1,h3,h4,h5,h6 {
-    font-weight: 600;
-    color: #56B6C2;
-    margin: 0 0 20px
-}
-
-h2 {
-    color: #56B6C2;
-    margin: 2px 0px 15px;
-    font-size: 157%
-}
-
-@media (prefers-color-scheme: dark) {
-    h1,h3,h4,h5,h6 {
-        color:#61afef
-    }
-
-    h2 {
-        color: #61afef
-    }
-}
-
-p,ul,ol,table,pre,dl {
-    margin: 0 0 20px
-}
-
-h1,h2,h3 {
-    line-height: 1.1
-}
-
-h1 {
-    font-size: 28px
-}
-
-a {
-    color: #39c;
-    text-decoration: none
-}
-
-a:hover {
-    color: #069
-}
-
-@media (prefers-color-scheme: dark) {
-    a {
-        color:#3eb7f0
-    }
-}
-
-a small {
-    font-size: 11px;
-    color: #777;
-    margin-top: -0.3em;
-    display: block
-}
-
-a:hover small {
-    color: #777
-}
-
-.wrapper {
-    width: 960px;
-    margin: 0 auto
-}
-
-blockquote {
-    border-left: 1px solid #e5e5e5;
-    margin: 0;
-    padding: 0 0 0 20px;
-    font-style: italic
-}
-
-code,pre {
-    font-family: Monaco, Bitstream Vera Sans Mono, Lucida Console, Terminal, Consolas, Liberation Mono, DejaVu Sans Mono, Courier New, monospace;
-    color: #333
-}
-
-pre {
-    max-width: 500px;
-    padding: 8px 15px;
-    background: #f8f8f8;
-    border-radius: 5px;
-    border: 1px solid #e5e5e5;
-    overflow-x: auto
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse
-}
-
-th,td {
-    text-align: left;
-    padding: 5px 10px;
-    border-bottom: 1px solid #e5e5e5
-}
-
-dt {
-    color: #444;
-    font-weight: 500
-}
-
-th {
-    color: #444
-}
-
-@media (prefers-color-scheme: dark) {
-    th {
-        color:#3eb7f0
-    }
-
-    dt {
-        color: #3eb7f0
-    }
-}
-
-img {
-    max-width: 100%
-}
-
-header {
-    width: 220px;
-    float: left;
-    position: fixed;
-    -webkit-font-smoothing: subpixel-antialiased;
-    padding-top: 4.0em;
-    text-align: center
-}
-
-header ul {
-    list-style: none;
-    height: 40px;
-    padding: 0;
-    background: #f4f4f4;
-    border-radius: 5px;
-    border: 1px solid #e0e0e0;
-    width: 270px
-}
-
-header li {
-    width: 89px;
-    float: left;
-    border-right: 1px solid #e0e0e0;
-    height: 40px
-}
-
-header li:first-child a {
-    border-radius: 5px 0 0 5px
-}
-
-header li:last-child a {
-    border-radius: 0 5px 5px 0
-}
-
-header ul a {
-    line-height: 1;
-    font-size: 11px;
-    color: #999;
-    display: block;
-    text-align: center;
-    padding-top: 6px;
-    height: 34px
-}
-
-header ul a:hover {
-    color: #999
-}
-
-header ul a:active {
-    background-color: #f0f0f0
-}
-
-strong {
-    color: #222;
-    font-weight: 500
-}
-
-@media (prefers-color-scheme: dark) {
-    strong {
-        color:#eeeff0
-    }
-}
-
-header ul li+li+li {
-    border-right: none;
-    width: 89px
-}
-
-header ul a strong {
-    font-size: 14px;
-    display: block;
-    color: #222
-}
-
-section {
-    width: 650px;
-    float: right;
-    padding-top: 4.0em;
-    padding-bottom: 50px
-}
-
-small {
-    font-size: 11px
-}
-
-hr {
-    border: 0;
-    background: #e5e5e5;
-    height: 1px;
-    margin: 0 0 20px
-}
-
-footer {
-    width: 220px;
-    float: left;
-    position: fixed;
-    bottom: 30px;
-    -webkit-font-smoothing: subpixel-antialiased;
-    text-align: center
-}
-
-@media print, screen and (max-width: 960px) {
-    div.wrapper {
-        width:auto;
-        margin: 0
-    }
-
-    header,section,footer {
-        float: none;
-        position: static;
-        width: auto
-    }
-
-    header {
-        padding-right: 320px
-    }
-
-    section {
-        border: 1px solid #e5e5e5;
-        border-width: 1px 0;
-        padding: 20px 0;
-        margin: 0 0 20px
-    }
-
-    header a small {
-        display: inline
-    }
-
-    header ul {
-        position: absolute;
-        right: 50px;
-        top: 52px
-    }
-
-    .image.avatar img {
-        border-radius: 100%;
-        width: 117px;
-        padding: 20px
-    }
-
-    #head1o2 {
-        visibility: hidden
-    }
-
-    #head2o2 {
-        visibility: hidden
-    }
-}
-
-@media print, screen and (max-width: 960px) {
-    body {
-        word-wrap:break-word;
-        padding: 15px
-    }
-
-    header {
-        padding: 0
-    }
-
-    pre,code {
-        word-wrap: normal
-    }
-}
-
-@media print, screen and (max-width: 480px) {
-    body {
-        padding:15px
-    }
-
-    header ul {
-        width: 99%
-    }
-
-    header li,header ul li+li+li {
-        width: 33%
-    }
-
-    .image.avatar img {
-        border-radius: 100%;
-        width: 95px;
-        padding: 20px
-    }
-
-    #head1o2 {
-        visibility: hidden
-    }
-
-    #head2o2 {
-        visibility: hidden
-    }
-}
-
-@media print {
-    body {
-        padding: 0.4in;
-        font-size: 12pt;
-        color: #444
-    }
-}
-
-.biblink {
-    text-decoration: none;
-    display: inline;
-    margin-right: 0px
-}
-
-.fakelink {
-    text-decoration: none;
-    cursor: pointer
-}
-
-.bibref {
-    font-size: 70%;
-    margin-top: 10px;
-    margin-left: 0px;
-    display: none;
-    font-family: monospace
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 body {
     font-family: 'Arial', sans-serif;
     line-height: 1.6;
     color: #333;
     background-color: #f4f4f4;
-    display: flex; /* Ajouté pour utiliser flexbox */
-    flex-direction: row; /* Les enfants de body seront alignés horizontalement */
-    min-height: 100vh; /* S'assurer que le body prend toute la hauteur de la fenêtre */
+    display: flex; /* Utiliser flexbox pour disposer les éléments */
+    flex-direction: row; /* Aligner les éléments horizontalement */
+    min-height: 100vh; /* Assurer que le body prend toute la hauteur de la fenêtre */
 }
 
 header {
+    width: 20%; /* Ou la largeur que vous préférez pour l'en-tête */
     background: #0a0a0a;
     color: #ffffff;
     padding: 20px;
-    width: 20%; /* Largeur du header ajustée */
-    min-width: 200px; /* Largeur minimum pour le header */
-    height: 100vh; /* Hauteur complète de la vue */
-    flex-shrink: 0; /* Empêcher le header de se rétrécir */
-    display: flex; /* Utiliser flexbox dans le header */
-    flex-direction: column; /* Alignement vertical des enfants du header */
+    height: 100vh; /* Hauteur complète de la fenêtre */
+    display: flex;
+    flex-direction: column; /* Aligner les éléments verticalement dans l'en-tête */
     justify-content: center; /* Centrer le contenu verticalement */
     align-items: center; /* Centrer le contenu horizontalement */
-}
-
-header h1 {
-    margin-bottom: 5px;
-    font-size: 36px;
-}
-
-header p {
-    font-style: italic;
-    color: #dddddd;
+    position: fixed; /* Fixer l'en-tête pour qu'il ne défile pas avec le contenu */
+    left: 0; /* Aligner l'en-tête à gauche */
+    top: 0; /* Aligner l'en-tête en haut */
 }
 
 .content {
-    flex-grow: 1; /* Le contenu prendra l'espace restant */
-    overflow-y: auto; /* Permettre le défilement si le contenu est plus long que la fenêtre */
-    padding: 20px; /* Espace autour du contenu principal */
-}
-
-section {
-    margin-bottom: 20px; /* Espace entre les sections */
-    background: #ffffff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-left: 20%; /* Espace pour l'en-tête fixe */
+    width: 80%; /* Espace restant pour le contenu */
+    overflow-y: auto; /* Permettre le défilement vertical si nécessaire */
     padding: 20px;
 }
 
-section h2 {
-    color: #0a0a0a;
-    font-size: 28px;
-}
+/* Styles pour les autres éléments... */
 
-ul, ul li {
-    background: none; /* Suppression du fond pour les ul et li */
-    border-left: none; /* Suppression de la bordure pour les li */
-}
-
-a {
-    color: #333;
-    text-decoration: none;
-}
-
-/* Ajoutez ici d'autres styles si nécessaire */
-
-/* Ajouter des styles pour le footer si nécessaire */
 footer {
-    /* Vos styles pour footer */
+    position: fixed; /* Fixer le footer */
+    bottom: 0; /* Aligner le footer en bas */
+    left: 0; /* Aligner le footer à gauche */
+    width: 100%; /* Largeur complète */
+    background: #0a0a0a;
+    color: white;
+    text-align: center;
+    padding: 10px;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* Médias queries pour ajuster la mise en page sur des écrans plus petits */
+@media (max-width: 768px) {
+    header {
+        width: 100%;
+        height: auto;
+        position: static;
+    }
+    .content {
+        margin-left: 0;
+        width: 100%;
+    }
+    footer {
+        position: static;
+    }
+}
