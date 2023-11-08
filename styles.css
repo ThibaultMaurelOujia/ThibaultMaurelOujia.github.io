@@ -1,0 +1,75 @@
+/* Reset CSS pour assurer une base cohérente entre les navigateurs */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f4;
+    display: flex; /* Ajouté pour utiliser flexbox */
+    flex-direction: row; /* Les enfants de body seront alignés horizontalement */
+    min-height: 100vh; /* S'assurer que le body prend toute la hauteur de la fenêtre */
+}
+
+header {
+    background: #0a0a0a;
+    color: #ffffff;
+    padding: 20px;
+    width: 20%; /* Largeur du header ajustée */
+    min-width: 200px; /* Largeur minimum pour le header */
+    height: 100vh; /* Hauteur complète de la vue */
+    flex-shrink: 0; /* Empêcher le header de se rétrécir */
+    display: flex; /* Utiliser flexbox dans le header */
+    flex-direction: column; /* Alignement vertical des enfants du header */
+    justify-content: center; /* Centrer le contenu verticalement */
+    align-items: center; /* Centrer le contenu horizontalement */
+}
+
+header h1 {
+    margin-bottom: 5px;
+    font-size: 36px;
+}
+
+header p {
+    font-style: italic;
+    color: #dddddd;
+}
+
+.content {
+    flex-grow: 1; /* Le contenu prendra l'espace restant */
+    overflow-y: auto; /* Permettre le défilement si le contenu est plus long que la fenêtre */
+    padding: 20px; /* Espace autour du contenu principal */
+}
+
+section {
+    margin-bottom: 20px; /* Espace entre les sections */
+    background: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+section h2 {
+    color: #0a0a0a;
+    font-size: 28px;
+}
+
+ul, ul li {
+    background: none; /* Suppression du fond pour les ul et li */
+    border-left: none; /* Suppression de la bordure pour les li */
+}
+
+a {
+    color: #333;
+    text-decoration: none;
+}
+
+/* Ajoutez ici d'autres styles si nécessaire */
+
+/* Ajouter des styles pour le footer si nécessaire */
+footer {
+    /* Vos styles pour footer */
+}
