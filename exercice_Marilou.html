@@ -2,9 +2,14 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Exercices de Multiplication de Puissances</title>
+  <title>Exercices de Mathématiques</title>
+  <!-- Intégration de MathJax pour l'affichage LaTeX -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async
+          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
   <style>
-    /* Styles simples pour l'apparence */
+    /* Styles pour l'apparence */
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
@@ -28,62 +33,156 @@
     }
     input[type="text"] {
       font-size: 1em;
+      width: 300px;
     }
     button {
       font-size: 1em;
-      margin-left: 10px;
+      margin: 5px;
+    }
+    .options {
+      margin-top: 10px;
+    }
+    .option-button {
+      display: block;
+      margin: 5px 0;
+      padding: 10px;
+      width: 300px;
+      text-align: left;
     }
   </style>
 </head>
 <body>
 
-  <h1>Exercice de Multiplication de Puissances</h1>
+  <h1>Exercices de Mathématiques</h1>
 
   <!-- Zone d'affichage de l'exercice -->
   <div id="exercise" class="exercise"></div>
 
-  <!-- Champ de saisie pour la réponse de l'utilisateur -->
-  <input type="text" id="userAnswer" placeholder="Votre réponse (ex : 10^(A+B))">
+  <!-- Champs pour la réponse de l'utilisateur -->
+  <input type="text" id="userAnswer" placeholder="Entrez votre réponse">
   <button onclick="checkAnswer()">Vérifier</button>
+  <button onclick="showAnswer()">Afficher la réponse</button>
+  <button onclick="generateOptions()">Besoin d'aide ?</button>
+  <button onclick="initExercise()">Nouvel Exercice</button>
+
+  <!-- Zone d'affichage des options de réponse -->
+  <div id="options" class="options"></div>
 
   <!-- Zone d'affichage du feedback -->
   <div id="feedback" class="feedback"></div>
 
   <!-- Script JavaScript -->
   <script>
-    // Variables globales pour stocker les valeurs aléatoires et la solution
-    let A, B, correctAnswer;
+    // Variables globales
+    let correctAnswer;
+    let expressionLatex;
 
-    // Fonction pour générer les exposants aléatoires
-    function generateExponents() {
-      // Générer des entiers aléatoires entre -10 et 10 pour A et B
-      A = Math.floor(Math.random() * 21) - 10;
-      B = Math.floor(Math.random() * 21) - 10;
+    // Fonction pour générer un entier aléatoire entre min et max inclus
+    function getRandomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    // Fonction pour afficher l'exercice à l'écran
-    function displayExercise() {
-      // Créer l'expression à afficher
-      let exerciseText = `Calculez : 10<sup>${A}</sup> × 10<sup>${B}</sup> = ?`;
-      // Afficher l'exercice dans la div avec l'id 'exercise'
+    // Fonction pour générer l'exercice
+    function generateExercise() {
+      // Choisir un type d'exercice aléatoire
+      const exerciseType = getRandomInt(1, 2); // 1 pour puissances, 2 pour carrés
+      let exerciseText = '';
+      if (exerciseType === 1) {
+        // Exercice de multiplication de puissances
+        let base = getRandomInt(2, 10);
+        let exponent1 = getRandomInt(-10, 10);
+        let exponent2 = getRandomInt(-10, 10);
+        expressionLatex = `${base}^{${exponent1}} \\times ${base}^{${exponent2}}`;
+        correctAnswer = `${base}^{${exponent1 + exponent2}}`;
+      } else {
+        // Exercice avec des carrés
+        let number = getRandomInt(2, 6);
+        let square = number * number;
+        let multiplier = getRandomInt(2, 5);
+        expressionLatex = `${number}^2 \\times ${multiplier}`;
+        correctAnswer = `${number * number * multiplier}`;
+      }
+
+      // Afficher l'expression
+      exerciseText = `Calculez : \$begin:math:text$${expressionLatex}\\$end:math:text$`;
       document.getElementById('exercise').innerHTML = exerciseText;
-    }
+      MathJax.typeset(); // Mettre à jour l'affichage LaTeX
 
-    // Fonction pour calculer la réponse correcte
-    function calculateAnswer() {
-      // Appliquer la propriété des puissances : 10^(A+B)
-      correctAnswer = `10^(${A + B})`;
+      // Réinitialiser les zones de feedback et d'options
+      document.getElementById('feedback').textContent = "";
+      document.getElementById('feedback').className = "feedback";
+      document.getElementById('options').innerHTML = "";
+      document.getElementById('userAnswer').value = "";
     }
 
     // Fonction pour vérifier la réponse de l'utilisateur
     function checkAnswer() {
-      // Récupérer la réponse de l'utilisateur
       let userAnswer = document.getElementById('userAnswer').value.trim();
-      // Comparer avec la réponse correcte
       if (userAnswer === correctAnswer) {
         displayFeedback(true);
       } else {
         displayFeedback(false);
+      }
+    }
+
+    // Fonction pour afficher la réponse correcte
+    function showAnswer() {
+      let feedbackElement = document.getElementById('feedback');
+      feedbackElement.innerHTML = `La réponse correcte est : \$begin:math:text$${correctAnswer}\\$end:math:text$`;
+      feedbackElement.className = "feedback";
+      MathJax.typeset(); // Mettre à jour l'affichage LaTeX
+    }
+
+    // Fonction pour générer des options de réponse
+    function generateOptions() {
+      let optionsElement = document.getElementById('options');
+      optionsElement.innerHTML = ""; // Réinitialiser les options
+
+      let options = new Set();
+      options.add(correctAnswer);
+
+      // Générer trois fausses réponses
+      while (options.size < 4) {
+        let fakeAnswer = generateFakeAnswer();
+        options.add(fakeAnswer);
+      }
+
+      // Convertir en tableau et mélanger les options
+      options = Array.from(options);
+      shuffleArray(options);
+
+      // Créer des boutons pour chaque option
+      options.forEach(option => {
+        let button = document.createElement('button');
+        button.className = 'option-button';
+        button.innerHTML = `\$begin:math:text$${option}\\$end:math:text$`;
+        button.onclick = function() {
+          document.getElementById('userAnswer').value = option;
+          checkAnswer();
+        };
+        optionsElement.appendChild(button);
+      });
+
+      MathJax.typeset(); // Mettre à jour l'affichage LaTeX
+    }
+
+    // Fonction pour générer une fausse réponse
+    function generateFakeAnswer() {
+      // Pour simplifier, on modifie légèrement l'exposant ou le résultat
+      if (correctAnswer.includes('^')) {
+        // Si la réponse est sous forme exponentielle
+        let parts = correctAnswer.split('^');
+        let base = parts[0];
+        let exponent = parseInt(parts[1].replace(/[()]/g, ''));
+        let fakeExponent = exponent + getRandomInt(-3, 3);
+        if (fakeExponent === exponent) fakeExponent += 1;
+        return `${base}^{${fakeExponent}}`;
+      } else {
+        // Si la réponse est un nombre
+        let correctValue = parseInt(correctAnswer);
+        let fakeValue = correctValue + getRandomInt(-10, 10);
+        if (fakeValue === correctValue) fakeValue += 1;
+        return `${fakeValue}`;
       }
     }
 
@@ -94,19 +193,22 @@
         feedbackElement.textContent = "Correct !";
         feedbackElement.className = "feedback correct";
       } else {
-        feedbackElement.textContent = `Incorrect. La bonne réponse est ${correctAnswer}.`;
+        feedbackElement.textContent = "Incorrect. Réessayez ou cliquez sur 'Afficher la réponse'.";
         feedbackElement.className = "feedback incorrect";
       }
     }
 
-    // Fonction principale pour initialiser l'exercice
+    // Fonction pour initialiser un nouvel exercice
     function initExercise() {
-      generateExponents();
-      calculateAnswer();
-      displayExercise();
-      // Réinitialiser le feedback et le champ de saisie
-      document.getElementById('feedback').textContent = "";
-      document.getElementById('userAnswer').value = "";
+      generateExercise();
+    }
+
+    // Fonction pour mélanger un tableau (algorithme de Fisher-Yates)
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
     }
 
     // Initialiser l'exercice au chargement de la page
@@ -115,5 +217,3 @@
 
 </body>
 </html>
-
-
