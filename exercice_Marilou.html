@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Exercices de Multiplication de Puissances</title>
+  <style>
+    /* Styles simples pour l'apparence */
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .exercise {
+      margin: 20px 0;
+      font-size: 1.2em;
+    }
+    .feedback {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .correct {
+      color: green;
+    }
+    .incorrect {
+      color: red;
+    }
+    input[type="text"] {
+      font-size: 1em;
+    }
+    button {
+      font-size: 1em;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Exercice de Multiplication de Puissances</h1>
+
+  <!-- Zone d'affichage de l'exercice -->
+  <div id="exercise" class="exercise"></div>
+
+  <!-- Champ de saisie pour la réponse de l'utilisateur -->
+  <input type="text" id="userAnswer" placeholder="Votre réponse (ex : 10^(A+B))">
+  <button onclick="checkAnswer()">Vérifier</button>
+
+  <!-- Zone d'affichage du feedback -->
+  <div id="feedback" class="feedback"></div>
+
+  <!-- Script JavaScript -->
+  <script>
+    // Variables globales pour stocker les valeurs aléatoires et la solution
+    let A, B, correctAnswer;
+
+    // Fonction pour générer les exposants aléatoires
+    function generateExponents() {
+      // Générer des entiers aléatoires entre -10 et 10 pour A et B
+      A = Math.floor(Math.random() * 21) - 10;
+      B = Math.floor(Math.random() * 21) - 10;
+    }
+
+    // Fonction pour afficher l'exercice à l'écran
+    function displayExercise() {
+      // Créer l'expression à afficher
+      let exerciseText = `Calculez : 10<sup>${A}</sup> × 10<sup>${B}</sup> = ?`;
+      // Afficher l'exercice dans la div avec l'id 'exercise'
+      document.getElementById('exercise').innerHTML = exerciseText;
+    }
+
+    // Fonction pour calculer la réponse correcte
+    function calculateAnswer() {
+      // Appliquer la propriété des puissances : 10^(A+B)
+      correctAnswer = `10^(${A + B})`;
+    }
+
+    // Fonction pour vérifier la réponse de l'utilisateur
+    function checkAnswer() {
+      // Récupérer la réponse de l'utilisateur
+      let userAnswer = document.getElementById('userAnswer').value.trim();
+      // Comparer avec la réponse correcte
+      if (userAnswer === correctAnswer) {
+        displayFeedback(true);
+      } else {
+        displayFeedback(false);
+      }
+    }
+
+    // Fonction pour afficher le feedback
+    function displayFeedback(isCorrect) {
+      let feedbackElement = document.getElementById('feedback');
+      if (isCorrect) {
+        feedbackElement.textContent = "Correct !";
+        feedbackElement.className = "feedback correct";
+      } else {
+        feedbackElement.textContent = `Incorrect. La bonne réponse est ${correctAnswer}.`;
+        feedbackElement.className = "feedback incorrect";
+      }
+    }
+
+    // Fonction principale pour initialiser l'exercice
+    function initExercise() {
+      generateExponents();
+      calculateAnswer();
+      displayExercise();
+      // Réinitialiser le feedback et le champ de saisie
+      document.getElementById('feedback').textContent = "";
+      document.getElementById('userAnswer').value = "";
+    }
+
+    // Initialiser l'exercice au chargement de la page
+    window.onload = initExercise;
+  </script>
+
+</body>
+</html>
+
+
