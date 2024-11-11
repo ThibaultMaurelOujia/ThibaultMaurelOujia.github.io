@@ -1,1 +1,251 @@
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Exercices de Mathématiques</title>
+  <!-- Intégration de MathJax pour l'affichage LaTeX -->
+  <!-- Vous pouvez commenter ces scripts si vous souhaitez tester sans MathJax -->
+  <!-- Étape 1 : Activez ces scripts en dernier, après avoir testé sans MathJax -->
+  <!--
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async
+          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  -->
+  <style>
+    /* Styles pour l'apparence */
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .exercise {
+      margin: 20px 0;
+      font-size: 1.2em;
+    }
+    .feedback {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .correct {
+      color: green;
+    }
+    .incorrect {
+      color: red;
+    }
+    input[type="text"] {
+      font-size: 1em;
+      width: 300px;
+    }
+    button {
+      font-size: 1em;
+      margin: 5px;
+    }
+    .options {
+      margin-top: 10px;
+    }
+    .option-button {
+      display: block;
+      margin: 5px 0;
+      padding: 10px;
+      width: 300px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Exercices de Mathématiques</h1>
+
+  <!-- Zone d'affichage de l'exercice -->
+  <div id="exercise" class="exercise"></div>
+
+  <!-- Champs pour la réponse de l'utilisateur -->
+  <input type="text" id="userAnswer" placeholder="Entrez votre réponse">
+  <button onclick="checkAnswer()">Vérifier</button>
+  <button onclick="showAnswer()">Afficher la réponse</button>
+  <button onclick="generateOptions()">Besoin d'aide ?</button>
+  <button onclick="initExercise()">Nouvel Exercice</button>
+
+  <!-- Zone d'affichage des options de réponse -->
+  <div id="options" class="options"></div>
+
+  <!-- Zone d'affichage du feedback -->
+  <div id="feedback" class="feedback"></div>
+
+  <!-- Script JavaScript -->
+  <script>
+    // Variables globales
+    let correctAnswer;
+    let expressionLatex;
+
+    // Fonction pour générer un entier aléatoire entre min et max inclus
+    // Étape 2 : Activez cette fonction en premier
+    function getRandomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    /*
+    // Fonction pour initialiser un nouvel exercice
+    // Étape 3 : Activez cette fonction
+    function initExercise() {
+      generateExercise();
+    }
+
+    // Fonction pour générer l'exercice
+    // Étape 4 : Activez cette fonction
+    function generateExercise() {
+      // Choisir un type d'exercice aléatoire
+      const exerciseType = getRandomInt(1, 2); // 1 pour puissances, 2 pour carrés
+      let exerciseText = '';
+      if (exerciseType === 1) {
+        // Exercice de multiplication de puissances
+        let base = getRandomInt(2, 10);
+        let exponent1 = getRandomInt(-10, 10);
+        let exponent2 = getRandomInt(-10, 10);
+        expressionLatex = base + '^(' + exponent1 + ') × ' + base + '^(' + exponent2 + ')';
+        correctAnswer = base + '^(' + (exponent1 + exponent2) + ')';
+      } else {
+        // Exercice avec des carrés
+        let number = getRandomInt(2, 6);
+        let multiplier = getRandomInt(2, 5);
+        expressionLatex = number + '^2 × ' + multiplier;
+        correctAnswer = (number * number * multiplier).toString();
+      }
+
+      // Afficher l'expression
+      exerciseText = 'Calculez : ' + expressionLatex;
+      document.getElementById('exercise').textContent = exerciseText;
+
+      // Réinitialiser les zones de feedback et d'options
+      document.getElementById('feedback').textContent = "";
+      document.getElementById('feedback').className = "feedback";
+      document.getElementById('options').innerHTML = "";
+      document.getElementById('userAnswer').value = "";
+    }
+
+    // Fonction pour vérifier la réponse de l'utilisateur
+    // Étape 5 : Activez cette fonction
+    function checkAnswer() {
+      let userAnswer = document.getElementById('userAnswer').value.trim();
+      if (userAnswer === correctAnswer) {
+        displayFeedback(true);
+      } else {
+        displayFeedback(false);
+      }
+    }
+
+    // Fonction pour afficher le feedback
+    // Étape 6 : Activez cette fonction
+    function displayFeedback(isCorrect) {
+      let feedbackElement = document.getElementById('feedback');
+      if (isCorrect) {
+        feedbackElement.textContent = "Correct !";
+        feedbackElement.className = "feedback correct";
+      } else {
+        feedbackElement.textContent = "Incorrect. Réessayez ou cliquez sur 'Afficher la réponse'.";
+        feedbackElement.className = "feedback incorrect";
+      }
+    }
+
+    // Fonction pour afficher la réponse correcte
+    // Étape 7 : Activez cette fonction
+    function showAnswer() {
+      let feedbackElement = document.getElementById('feedback');
+      feedbackElement.textContent = 'La réponse correcte est : ' + correctAnswer;
+      feedbackElement.className = "feedback";
+    }
+
+    // Fonction pour générer des options de réponse
+    // Étape 8 : Activez cette fonction
+    function generateOptions() {
+      let optionsElement = document.getElementById('options');
+      optionsElement.innerHTML = ""; // Réinitialiser les options
+
+      let options = new Set();
+      options.add(correctAnswer);
+
+      // Compteur pour éviter une boucle infinie
+      let attempts = 0;
+      const maxAttempts = 10;
+
+      // Générer trois fausses réponses
+      while (options.size < 4 && attempts < maxAttempts) {
+        let fakeAnswer = generateFakeAnswer();
+        options.add(fakeAnswer);
+        attempts++;
+      }
+
+      // Vérifier si on a bien 4 options
+      if (options.size < 4) {
+        console.error("Impossible de générer suffisamment de fausses réponses.");
+        return;
+      }
+
+      // Convertir en tableau et mélanger les options
+      options = Array.from(options);
+      shuffleArray(options);
+
+      // Créer des boutons pour chaque option
+      options.forEach(option => {
+        let button = document.createElement('button');
+        button.className = 'option-button';
+        button.textContent = option;
+        button.onclick = function() {
+          document.getElementById('userAnswer').value = option;
+          checkAnswer();
+        };
+        optionsElement.appendChild(button);
+      });
+    }
+
+    // Fonction pour générer une fausse réponse
+    // Étape 9 : Activez cette fonction
+    function generateFakeAnswer() {
+      // Pour simplifier, on modifie légèrement l'exposant ou le résultat
+      if (correctAnswer.includes('^')) {
+        // Si la réponse est sous forme exponentielle
+        // Extraire la base et l'exposant
+        let parts = correctAnswer.split('^(');
+        let base = parts[0];
+        let exponent = parseInt(parts[1].replace(')', ''));
+        let fakeExponent = exponent + getRandomInt(-3, 3);
+        if (fakeExponent === exponent) fakeExponent += 1;
+        return base + '^(' + fakeExponent + ')';
+      } else {
+        // Si la réponse est un nombre
+        let correctValue = parseInt(correctAnswer);
+        if (isNaN(correctValue)) {
+          // En cas d'erreur, retourner une fausse réponse générique
+          return correctAnswer + "'";
+        }
+        let fakeValue = correctValue + getRandomInt(-10, 10);
+        if (fakeValue === correctValue) fakeValue += 1;
+        return fakeValue.toString();
+      }
+    }
+
+    // Fonction pour mélanger un tableau (algorithme de Fisher-Yates)
+    // Étape 10 : Activez cette fonction
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        let j = getRandomInt(0, i);
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    // Initialiser l'exercice au chargement de la page
+    // Étape 11 : Activez cette ligne
+    window.onload = initExercise;
+
+    */
+    
+  </script>
+
+</body>
+</html>
+
+
+
