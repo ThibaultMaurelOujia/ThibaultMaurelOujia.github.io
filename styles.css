@@ -22,6 +22,7 @@ header {
 
 .header-content {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
 }
 
@@ -31,6 +32,10 @@ header {
     border-radius: 50%;
     margin-right: 20px;
     object-fit: cover;
+}
+
+.header-text {
+    flex: 1;
 }
 
 .header-text h1 {
@@ -88,6 +93,26 @@ section ul li {
 
 .publication-list li p {
     margin: 5px 0;
+}
+
+.publication-list p a {
+    color: #0077b5;
+    text-decoration: none;
+}
+
+.publication-list p a:hover {
+    text-decoration: underline;
+}
+
+/* Research Interests Two Columns */
+.research-interests ul {
+    columns: 2;
+    -webkit-columns: 2;
+    -moz-columns: 2;
+}
+
+.research-interests li {
+    margin-bottom: 5px;
 }
 
 /* Footer Styles */
