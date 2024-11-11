@@ -7,19 +7,24 @@
   <!--
     Ce programme génère des exercices de manipulation des puissances pour aider à s'entraîner.
     Fonctionnalités :
-    - Génération d'expressions à simplifier, en incluant des nombres comme 25 (5^2), 16 (2^4), etc.
+    - Génération d'expressions à simplifier, incluant des nombres comme 25 (5^2), 16 (2^4), etc.
     - Affichage des expressions et des réponses en LaTeX grâce à KaTeX.
     - Vérification des réponses de l'utilisateur en comparant les expressions simplifiées.
     - Propose des options d'aide avec des réponses multiples (1 correcte, 3 fausses).
     - Bouton pour afficher la réponse correcte.
     - Bouton pour générer un nouvel exercice.
+
+    Exemple d'exercice généré :
+    - Calculez et simplifiez : \(2^{3} \times 8\)
+    - Réponse attendue : \(2^{6}\)
   -->
 
   <!-- Intégration de KaTeX pour l'affichage LaTeX -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" integrity="sha384-vZTG0nTWCA6X2G/uVmCl8qH7xXExH6LrFwZJexUvXjjF1F2uD0SoM1W6PrZXRy8+" crossorigin="anonymous">
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js" integrity="sha384-Nr0viM6xgzh1Y6eFvZUbuvH/c6btqdZQ6Hz35U2t3qCof5DG1Fl0NEy+NC1QvrPA" crossorigin="anonymous"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js" integrity="sha384-VZJMtwSYz8dFcFKUT3u9KVDuDZWRpbOEuSPd+CJ/s/0p+zzBz0PuAGZTtBeJH6Z0" crossorigin="anonymous"
-    onload="renderMathInElement(document.body);"></script>
+  <!-- Suppression des attributs 'integrity' pour éviter les erreurs -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true},{left: '$', right: '$', display: false}]});"></script>
 
   <style>
     /* Styles pour l'apparence */
@@ -92,7 +97,6 @@
     let correctAnswer;       // Stocke la réponse correcte sous forme de chaîne LaTeX
     let expressionLatex;     // Stocke l'expression de l'exercice en LaTeX
     let combinedFactors;     // Stocke les facteurs combinés pour la réponse
-    let combinedBases;       // Stocke les bases pour générer les fausses réponses
 
     /**
      * Fonction pour générer un entier aléatoire entre min et max inclus
@@ -136,7 +140,6 @@
       const numTerms = getRandomInt(2, 4); // Nombre de termes dans l'expression
       let terms = [];
       combinedFactors = {}; // Réinitialiser les facteurs combinés
-      combinedBases = [];   // Réinitialiser les bases pour les fausses réponses
 
       for (let i = 0; i < numTerms; i++) {
         let baseOptions = [2, 3, 5, 7];
@@ -160,7 +163,6 @@
               combinedFactors[factor] += factors[factor];
             } else {
               combinedFactors[factor] = factors[factor];
-              combinedBases.push(parseInt(factor));
             }
           }
         } else {
@@ -174,7 +176,6 @@
             combinedFactors[base] += exponent;
           } else {
             combinedFactors[base] = exponent;
-            combinedBases.push(base);
           }
         }
       }
@@ -197,9 +198,16 @@
       correctAnswer = answerParts.join(' \\times ');
 
       // Afficher l'expression
-      let exerciseText = `Calculez et simplifiez : $${expressionLatex}$`;
-      document.getElementById('exercise').innerHTML = exerciseText;
-      renderMathInElement(document.getElementById('exercise')); // Mettre à jour l'affichage LaTeX
+      let exerciseElement = document.getElementById('exercise');
+      exerciseElement.innerHTML = `Calculez et simplifiez : $${expressionLatex}$`;
+
+      // Rendre les expressions LaTeX
+      renderMathInElement(exerciseElement, {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '$', right: '$', display: false}
+        ]
+      });
 
       // Réinitialiser les zones de feedback et d'options
       document.getElementById('feedback').textContent = "";
@@ -268,8 +276,14 @@
     function showAnswer() {
       let feedbackElement = document.getElementById('feedback');
       feedbackElement.innerHTML = `La réponse correcte est : $${correctAnswer}$`;
-      feedbackElement.className = "feedback";
-      renderMathInElement(feedbackElement); // Mettre à jour l'affichage LaTeX
+
+      // Rendre les expressions LaTeX
+      renderMathInElement(feedbackElement, {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '$', right: '$', display: false}
+        ]
+      });
     }
 
     /**
@@ -304,7 +318,13 @@
         optionsElement.appendChild(button);
       });
 
-      renderMathInElement(optionsElement); // Mettre à jour l'affichage LaTeX
+      // Rendre les expressions LaTeX
+      renderMathInElement(optionsElement, {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '$', right: '$', display: false}
+        ]
+      });
     }
 
     /**
