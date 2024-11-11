@@ -126,3 +126,9 @@ footer {
 footer p {
     margin: 0;
 }
+
+.profile-image-flipped {
+    transform: scaleX(-1);
+}
+
+
