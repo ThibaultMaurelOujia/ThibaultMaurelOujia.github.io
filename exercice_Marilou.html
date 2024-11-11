@@ -3,12 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <title>Exercices de Manipulation des Puissances</title>
-  <!-- Intégration de MathJax pour l'affichage LaTeX -->
-  <!-- Assurez-vous que ces scripts sont bien inclus et non commentés -->
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script id="MathJax-script" async
-          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-  </script>
+
+  <!--
+    Ce programme génère des exercices de manipulation des puissances pour aider à s'entraîner.
+    Fonctionnalités :
+    - Génération d'expressions à simplifier, en incluant des nombres comme 25 (5^2), 16 (2^4), etc.
+    - Affichage des expressions et des réponses en LaTeX grâce à KaTeX.
+    - Vérification des réponses de l'utilisateur en comparant les expressions simplifiées.
+    - Propose des options d'aide avec des réponses multiples (1 correcte, 3 fausses).
+    - Bouton pour afficher la réponse correcte.
+    - Bouton pour générer un nouvel exercice.
+  -->
+
+  <!-- Intégration de KaTeX pour l'affichage LaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" integrity="sha384-vZTG0nTWCA6X2G/uVmCl8qH7xXExH6LrFwZJexUvXjjF1F2uD0SoM1W6PrZXRy8+" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js" integrity="sha384-Nr0viM6xgzh1Y6eFvZUbuvH/c6btqdZQ6Hz35U2t3qCof5DG1Fl0NEy+NC1QvrPA" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js" integrity="sha384-VZJMtwSYz8dFcFKUT3u9KVDuDZWRpbOEuSPd+CJ/s/0p+zzBz0PuAGZTtBeJH6Z0" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+
   <style>
     /* Styles pour l'apparence */
     body {
@@ -74,16 +86,30 @@
 
   <!-- Script JavaScript -->
   <script>
-    // Variables globales
-    let correctAnswer;
-    let expressionLatex;
+    /**
+     * Variables globales
+     */
+    let correctAnswer;       // Stocke la réponse correcte sous forme de chaîne LaTeX
+    let expressionLatex;     // Stocke l'expression de l'exercice en LaTeX
+    let combinedFactors;     // Stocke les facteurs combinés pour la réponse
+    let combinedBases;       // Stocke les bases pour générer les fausses réponses
 
-    // Fonction pour générer un entier aléatoire entre min et max inclus
+    /**
+     * Fonction pour générer un entier aléatoire entre min et max inclus
+     * @param {number} min - Valeur minimale
+     * @param {number} max - Valeur maximale
+     * @returns {number} - Entier aléatoire entre min et max
+     */
     function getRandomInt(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    // Fonction pour factoriser un nombre en facteurs premiers
+    /**
+     * Fonction pour factoriser un nombre en facteurs premiers
+     * @param {number} n - Le nombre à factoriser
+     * @returns {Object} - Un objet avec les facteurs premiers et leurs exposants
+     * Exemple : primeFactorization(36) => {2: 2, 3: 2}
+     */
     function primeFactorization(n) {
       const factors = {};
       let divisor = 2;
@@ -102,12 +128,15 @@
       return factors;
     }
 
-    // Fonction pour générer l'exercice
+    /**
+     * Fonction pour générer l'exercice
+     */
     function generateExercise() {
       // Générer plusieurs termes à multiplier
       const numTerms = getRandomInt(2, 4); // Nombre de termes dans l'expression
       let terms = [];
-      let combinedFactors = {};
+      combinedFactors = {}; // Réinitialiser les facteurs combinés
+      combinedBases = [];   // Réinitialiser les bases pour les fausses réponses
 
       for (let i = 0; i < numTerms; i++) {
         let baseOptions = [2, 3, 5, 7];
@@ -131,6 +160,7 @@
               combinedFactors[factor] += factors[factor];
             } else {
               combinedFactors[factor] = factors[factor];
+              combinedBases.push(parseInt(factor));
             }
           }
         } else {
@@ -144,6 +174,7 @@
             combinedFactors[base] += exponent;
           } else {
             combinedFactors[base] = exponent;
+            combinedBases.push(base);
           }
         }
       }
@@ -166,9 +197,9 @@
       correctAnswer = answerParts.join(' \\times ');
 
       // Afficher l'expression
-      let exerciseText = `Calculez et simplifiez : \$begin:math:text$${expressionLatex}\\$end:math:text$`;
+      let exerciseText = `Calculez et simplifiez : $${expressionLatex}$`;
       document.getElementById('exercise').innerHTML = exerciseText;
-      MathJax.typesetPromise(); // Mettre à jour l'affichage LaTeX
+      renderMathInElement(document.getElementById('exercise')); // Mettre à jour l'affichage LaTeX
 
       // Réinitialiser les zones de feedback et d'options
       document.getElementById('feedback').textContent = "";
@@ -177,7 +208,9 @@
       document.getElementById('userAnswer').value = "";
     }
 
-    // Fonction pour vérifier la réponse de l'utilisateur
+    /**
+     * Fonction pour vérifier la réponse de l'utilisateur
+     */
     function checkAnswer() {
       let userAnswer = document.getElementById('userAnswer').value.trim();
 
@@ -192,10 +225,17 @@
       }
     }
 
-    // Fonction pour normaliser une réponse (enlever les espaces, ordonner les termes)
+    /**
+     * Fonction pour normaliser une réponse (enlever les espaces, ordonner les termes)
+     * @param {string} answer - La réponse à normaliser
+     * @returns {string} - La réponse normalisée
+     */
     function normalizeAnswer(answer) {
       // Enlever les espaces
       answer = answer.replace(/\s+/g, '');
+
+      // Remplacer les symboles de multiplication éventuels
+      answer = answer.replace(/[*×]/g, '\\times');
 
       // Diviser les termes
       let terms = answer.split('\\times');
@@ -207,7 +247,10 @@
       return terms.join('\\times');
     }
 
-    // Fonction pour afficher le feedback
+    /**
+     * Fonction pour afficher le feedback
+     * @param {boolean} isCorrect - Indique si la réponse est correcte
+     */
     function displayFeedback(isCorrect) {
       let feedbackElement = document.getElementById('feedback');
       if (isCorrect) {
@@ -219,15 +262,19 @@
       }
     }
 
-    // Fonction pour afficher la réponse correcte
+    /**
+     * Fonction pour afficher la réponse correcte
+     */
     function showAnswer() {
       let feedbackElement = document.getElementById('feedback');
-      feedbackElement.innerHTML = `La réponse correcte est : \$begin:math:text$${correctAnswer}\\$end:math:text$`;
+      feedbackElement.innerHTML = `La réponse correcte est : $${correctAnswer}$`;
       feedbackElement.className = "feedback";
-      MathJax.typesetPromise(); // Mettre à jour l'affichage LaTeX
+      renderMathInElement(feedbackElement); // Mettre à jour l'affichage LaTeX
     }
 
-    // Fonction pour générer des options de réponse
+    /**
+     * Fonction pour générer des options de réponse (3 fausses et 1 correcte)
+     */
     function generateOptions() {
       let optionsElement = document.getElementById('options');
       optionsElement.innerHTML = ""; // Réinitialiser les options
@@ -249,7 +296,7 @@
       options.forEach(option => {
         let button = document.createElement('button');
         button.className = 'option-button';
-        button.innerHTML = `\$begin:math:text$${option}\\$end:math:text$`;
+        button.innerHTML = `$${option}$`;
         button.onclick = function() {
           document.getElementById('userAnswer').value = option;
           checkAnswer();
@@ -257,10 +304,13 @@
         optionsElement.appendChild(button);
       });
 
-      MathJax.typesetPromise(); // Mettre à jour l'affichage LaTeX
+      renderMathInElement(optionsElement); // Mettre à jour l'affichage LaTeX
     }
 
-    // Fonction pour générer une fausse réponse
+    /**
+     * Fonction pour générer une fausse réponse
+     * @returns {string} - Une fausse réponse sous forme LaTeX
+     */
     function generateFakeAnswer() {
       // Modifier les exposants de manière aléatoire
       let fakeAnswerParts = [];
@@ -269,7 +319,7 @@
         let exponent = combinedFactors[base];
         // Modifier l'exposant aléatoirement
         let fakeExponent = exponent + getRandomInt(-2, 2);
-        if (fakeExponent <= 0) {
+        if (fakeExponent <= 0 || fakeExponent === exponent) {
           fakeExponent = exponent + 1;
         }
         if (fakeExponent === 1) {
@@ -281,7 +331,10 @@
       return fakeAnswerParts.join(' \\times ');
     }
 
-    // Fonction pour mélanger un tableau (algorithme de Fisher-Yates)
+    /**
+     * Fonction pour mélanger un tableau (algorithme de Fisher-Yates)
+     * @param {Array} array - Le tableau à mélanger
+     */
     function shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {
         let j = getRandomInt(0, i);
@@ -289,11 +342,14 @@
       }
     }
 
-    // Initialiser l'exercice au chargement de la page
+    /**
+     * Fonction pour initialiser un nouvel exercice
+     */
     function initExercise() {
       generateExercise();
     }
 
+    // Initialiser l'exercice au chargement de la page
     window.onload = initExercise;
   </script>
 
