@@ -1,19 +1,14 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Exercices de Mathématiques</title>
-  
+  <title>Exercices de Manipulation des Puissances</title>
   <!-- Intégration de MathJax pour l'affichage LaTeX -->
-  <!-- Vous pouvez commenter ces scripts si vous souhaitez tester sans MathJax -->
-  <!-- Étape 1 : Activez ces scripts en dernier, après avoir testé sans MathJax -->
-  
+  <!-- Assurez-vous que ces scripts sont bien inclus et non commentés -->
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async
           src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
   </script>
-  
   <style>
     /* Styles pour l'apparence */
     body {
@@ -59,13 +54,13 @@
 </head>
 <body>
 
-  <h1>Exercices de Mathématiques</h1>
+  <h1>Exercices de Manipulation des Puissances</h1>
 
   <!-- Zone d'affichage de l'exercice -->
   <div id="exercise" class="exercise"></div>
 
   <!-- Champs pour la réponse de l'utilisateur -->
-  <input type="text" id="userAnswer" placeholder="Entrez votre réponse">
+  <input type="text" id="userAnswer" placeholder="Entrez votre réponse sous forme exponentielle, par exemple 2^{5}">
   <button onclick="checkAnswer()">Vérifier</button>
   <button onclick="showAnswer()">Afficher la réponse</button>
   <button onclick="generateOptions()">Besoin d'aide ?</button>
@@ -84,41 +79,96 @@
     let expressionLatex;
 
     // Fonction pour générer un entier aléatoire entre min et max inclus
-    // Étape 2 : Activez cette fonction en premier
     function getRandomInt(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
-    
-    // Fonction pour initialiser un nouvel exercice
-    // Étape 3 : Activez cette fonction
-    function initExercise() {
-      generateExercise();
+
+    // Fonction pour factoriser un nombre en facteurs premiers
+    function primeFactorization(n) {
+      const factors = {};
+      let divisor = 2;
+      while (n >= 2) {
+        if (n % divisor === 0) {
+          if (factors[divisor]) {
+            factors[divisor]++;
+          } else {
+            factors[divisor] = 1;
+          }
+          n = n / divisor;
+        } else {
+          divisor++;
+        }
+      }
+      return factors;
     }
-    
+
     // Fonction pour générer l'exercice
-    // Étape 4 : Activez cette fonction
     function generateExercise() {
-      // Choisir un type d'exercice aléatoire
-      const exerciseType = getRandomInt(1, 2); // 1 pour puissances, 2 pour carrés
-      let exerciseText = '';
-      if (exerciseType === 1) {
-        // Exercice de multiplication de puissances
-        let base = getRandomInt(2, 10);
-        let exponent1 = getRandomInt(-10, 10);
-        let exponent2 = getRandomInt(-10, 10);
-        expressionLatex = base + '^(' + exponent1 + ') × ' + base + '^(' + exponent2 + ')';
-        correctAnswer = base + '^(' + (exponent1 + exponent2) + ')';
-      } else {
-        // Exercice avec des carrés
-        let number = getRandomInt(2, 6);
-        let multiplier = getRandomInt(2, 5);
-        expressionLatex = number + '^2 × ' + multiplier;
-        correctAnswer = (number * number * multiplier).toString();
+      // Générer plusieurs termes à multiplier
+      const numTerms = getRandomInt(2, 4); // Nombre de termes dans l'expression
+      let terms = [];
+      let combinedFactors = {};
+
+      for (let i = 0; i < numTerms; i++) {
+        let baseOptions = [2, 3, 5, 7];
+        let base = baseOptions[getRandomInt(0, baseOptions.length - 1)];
+        let exponent = getRandomInt(1, 3);
+
+        // Parfois, on utilise un nombre comme 25, 36, etc.
+        let useComposite = getRandomInt(0, 1) === 1;
+
+        if (useComposite) {
+          // Utiliser un carré parfait
+          const compositeNumbers = [4, 9, 16, 25, 36];
+          let number = compositeNumbers[getRandomInt(0, compositeNumbers.length - 1)];
+          // Factoriser le nombre
+          let factors = primeFactorization(number);
+          terms.push({factors: factors, display: number.toString()});
+
+          // Ajouter les facteurs au total
+          for (let factor in factors) {
+            if (combinedFactors[factor]) {
+              combinedFactors[factor] += factors[factor];
+            } else {
+              combinedFactors[factor] = factors[factor];
+            }
+          }
+        } else {
+          // Utiliser une puissance
+          let factors = {};
+          factors[base] = exponent;
+          terms.push({factors: factors, display: `${base}^{${exponent}}`});
+
+          // Ajouter les facteurs au total
+          if (combinedFactors[base]) {
+            combinedFactors[base] += exponent;
+          } else {
+            combinedFactors[base] = exponent;
+          }
+        }
       }
 
+      // Construire l'expression LaTeX
+      expressionLatex = terms.map(term => term.display).join(' \\times ');
+
+      // Construire la réponse correcte
+      let answerParts = [];
+      // Trier les bases dans l'ordre croissant
+      let sortedBases = Object.keys(combinedFactors).map(Number).sort((a, b) => a - b);
+      for (let base of sortedBases) {
+        let exponent = combinedFactors[base];
+        if (exponent === 1) {
+          answerParts.push(`${base}`);
+        } else {
+          answerParts.push(`${base}^{${exponent}}`);
+        }
+      }
+      correctAnswer = answerParts.join(' \\times ');
+
       // Afficher l'expression
-      exerciseText = 'Calculez : ' + expressionLatex;
-      document.getElementById('exercise').textContent = exerciseText;
+      let exerciseText = `Calculez et simplifiez : \$begin:math:text$${expressionLatex}\\$end:math:text$`;
+      document.getElementById('exercise').innerHTML = exerciseText;
+      MathJax.typesetPromise(); // Mettre à jour l'affichage LaTeX
 
       // Réinitialiser les zones de feedback et d'options
       document.getElementById('feedback').textContent = "";
@@ -126,20 +176,38 @@
       document.getElementById('options').innerHTML = "";
       document.getElementById('userAnswer').value = "";
     }
-    
+
     // Fonction pour vérifier la réponse de l'utilisateur
-    // Étape 5 : Activez cette fonction
     function checkAnswer() {
       let userAnswer = document.getElementById('userAnswer').value.trim();
-      if (userAnswer === correctAnswer) {
+
+      // Normaliser les réponses pour comparaison
+      let normalizedUserAnswer = normalizeAnswer(userAnswer);
+      let normalizedCorrectAnswer = normalizeAnswer(correctAnswer);
+
+      if (normalizedUserAnswer === normalizedCorrectAnswer) {
         displayFeedback(true);
       } else {
         displayFeedback(false);
       }
     }
 
+    // Fonction pour normaliser une réponse (enlever les espaces, ordonner les termes)
+    function normalizeAnswer(answer) {
+      // Enlever les espaces
+      answer = answer.replace(/\s+/g, '');
+
+      // Diviser les termes
+      let terms = answer.split('\\times');
+
+      // Trier les termes
+      terms.sort();
+
+      // Rejoindre les termes
+      return terms.join('\\times');
+    }
+
     // Fonction pour afficher le feedback
-    // Étape 6 : Activez cette fonction
     function displayFeedback(isCorrect) {
       let feedbackElement = document.getElementById('feedback');
       if (isCorrect) {
@@ -152,15 +220,14 @@
     }
 
     // Fonction pour afficher la réponse correcte
-    // Étape 7 : Activez cette fonction
     function showAnswer() {
       let feedbackElement = document.getElementById('feedback');
-      feedbackElement.textContent = 'La réponse correcte est : ' + correctAnswer;
+      feedbackElement.innerHTML = `La réponse correcte est : \$begin:math:text$${correctAnswer}\\$end:math:text$`;
       feedbackElement.className = "feedback";
+      MathJax.typesetPromise(); // Mettre à jour l'affichage LaTeX
     }
-    
+
     // Fonction pour générer des options de réponse
-    // Étape 8 : Activez cette fonction
     function generateOptions() {
       let optionsElement = document.getElementById('options');
       optionsElement.innerHTML = ""; // Réinitialiser les options
@@ -168,21 +235,10 @@
       let options = new Set();
       options.add(correctAnswer);
 
-      // Compteur pour éviter une boucle infinie
-      let attempts = 0;
-      const maxAttempts = 10;
-
       // Générer trois fausses réponses
-      while (options.size < 4 && attempts < maxAttempts) {
+      while (options.size < 4) {
         let fakeAnswer = generateFakeAnswer();
         options.add(fakeAnswer);
-        attempts++;
-      }
-
-      // Vérifier si on a bien 4 options
-      if (options.size < 4) {
-        console.error("Impossible de générer suffisamment de fausses réponses.");
-        return;
       }
 
       // Convertir en tableau et mélanger les options
@@ -193,60 +249,53 @@
       options.forEach(option => {
         let button = document.createElement('button');
         button.className = 'option-button';
-        button.textContent = option;
+        button.innerHTML = `\$begin:math:text$${option}\\$end:math:text$`;
         button.onclick = function() {
           document.getElementById('userAnswer').value = option;
           checkAnswer();
         };
         optionsElement.appendChild(button);
       });
+
+      MathJax.typesetPromise(); // Mettre à jour l'affichage LaTeX
     }
-    
+
     // Fonction pour générer une fausse réponse
-    // Étape 9 : Activez cette fonction
     function generateFakeAnswer() {
-      // Pour simplifier, on modifie légèrement l'exposant ou le résultat
-      if (correctAnswer.includes('^')) {
-        // Si la réponse est sous forme exponentielle
-        // Extraire la base et l'exposant
-        let parts = correctAnswer.split('^(');
-        let base = parts[0];
-        let exponent = parseInt(parts[1].replace(')', ''));
-        let fakeExponent = exponent + getRandomInt(-3, 3);
-        if (fakeExponent === exponent) fakeExponent += 1;
-        return base + '^(' + fakeExponent + ')';
-      } else {
-        // Si la réponse est un nombre
-        let correctValue = parseInt(correctAnswer);
-        if (isNaN(correctValue)) {
-          // En cas d'erreur, retourner une fausse réponse générique
-          return correctAnswer + "'";
+      // Modifier les exposants de manière aléatoire
+      let fakeAnswerParts = [];
+      let sortedBases = Object.keys(combinedFactors).map(Number).sort((a, b) => a - b);
+      for (let base of sortedBases) {
+        let exponent = combinedFactors[base];
+        // Modifier l'exposant aléatoirement
+        let fakeExponent = exponent + getRandomInt(-2, 2);
+        if (fakeExponent <= 0) {
+          fakeExponent = exponent + 1;
         }
-        let fakeValue = correctValue + getRandomInt(-10, 10);
-        if (fakeValue === correctValue) fakeValue += 1;
-        return fakeValue.toString();
+        if (fakeExponent === 1) {
+          fakeAnswerParts.push(`${base}`);
+        } else {
+          fakeAnswerParts.push(`${base}^{${fakeExponent}}`);
+        }
       }
+      return fakeAnswerParts.join(' \\times ');
     }
-    
+
     // Fonction pour mélanger un tableau (algorithme de Fisher-Yates)
-    // Étape 10 : Activez cette fonction
     function shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {
         let j = getRandomInt(0, i);
         [array[i], array[j]] = [array[j], array[i]];
       }
     }
-    
+
     // Initialiser l'exercice au chargement de la page
-    // Étape 11 : Activez cette ligne
+    function initExercise() {
+      generateExercise();
+    }
+
     window.onload = initExercise;
-    
-    
-    
   </script>
 
 </body>
 </html>
-
-
-
