@@ -132,4 +132,7 @@ footer p {
     transition: transform 0.3s ease;
 }
 
+.disabled {
+  display: none !important;
+}
 
